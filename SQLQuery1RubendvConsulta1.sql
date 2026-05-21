@@ -295,3 +295,65 @@ SELECT *
 FROM CLIENTES AS C
 WHERE LEFT(UPPER(C.NombreEmpresa),1) BETWEEN 'B' AND 'G' AND C.Pais = 'Reino Unido'
 ORDER BY C.NombreEmpresa
+
+--13. Seleccionar los productos vigentes cuyos precios unitarios están entre 35 y 250, sin stock en almacén,
+--pertenecientes a las categorías 1, 3, 4, 6 y 8, que son distribuidos por los proveedores, 2, 4, 6, 7, 8 y 9.
+SELECT *
+FROM Productos AS P
+WHERE P.DISCONTINUADO<>0 AND P.IDProveedor IN (2,4,6,7,8,9)
+AND P.IDProveedor IN (2, 4, 6, 7, 8,9)AND P.PrecioUnitario BETWEEN 35 AND 250
+AND P.UnidadesEnStock = 0;
+--14. Seleccionar todos los campos de los productos descontinuados, que pertenezcan a los proveedores con
+--códigos: 1, 3, 7, 8 y 9, que tengan stock en almacén, y al mismo tiempo que sus precios unitarios estén
+--entre 39 y 190, ordenados por código de proveedores y precio unitario de manera ascendente. 
+SELECT * 
+FROM Productos AS P
+WHERE P.IDProducto IN (1, 3, 7, 8, 9) AND P.UnidadesEnStock>0
+AND P.PrecioUnitario BETWEEN 39 AND 190
+ORDER BY P.IDProveedor ASC, p.PrecioUnitario ASC 
+--Esto se va a ordenar, y si solo si hay un empate es que entra en juego el segundo ordenador
+
+--15. Seleccionar los 7 productos con precio más caro, que cuenten con stock en almacén
+SELECT TOP 7 P.PrecioUnitario,P.IDProducto,p.UnidadesEnStock,p.NombreProducto
+FROM Productos AS P
+WHERE P.UnidadesEnStock >0
+ORDER BY P.PrecioUnitario DESC;
+
+--16. Seleccionar los 9 productos, con menos stock en almacén, que pertenezcan a la categoría 3, 5 y 8. 
+SELECT TOP 9*
+FROM PRODUCTOS AS P
+WHERE P.IDCategoria IN (3,5,8)
+ORDER BY P.UnidadesEnStock ASC
+
+--17. Seleccionar los pedidos, realizados por el empleado con código entre el 2 y 5, además de los clientes con
+--código que comienzan con las letras de la A hasta la G, del 31 de enero de cualquier año. 
+SELECT * 
+FROM PEDIDOS AS P
+WHERE P.IDEmpleado BETWEEN 2 AND 5 OR (LEFT(UPPER(P.IDCliente),1) BETWEEN 'A' AND 'G'
+									   AND P.FechaPedido LIKE '____0131')
+ORDER BY P.IDEmpleado
+
+--18. Seleccionar los pedidos, realizados por el empleado con código 3, de cualquier año, pero solo de los
+--últimos 5 meses (agosto-diciembre) 
+
+SELECT * 
+FROM Pedidos AS P 
+WHERE MONTH(P.FechaPedido)>7 AND P.IDEmpleado = 3;
+
+--19. Seleccionar los detalles de los pedidos, que tengan un monto de cantidad pedida entre 10 y 250
+SELECT *
+FROM [Detalles Pedido] AS P
+WHERE P.Cantidad BETWEEN 10 AND 250;
+
+--20. Seleccionar los detalles de los pedidos, cuyo monto del pedido estén entre 10 y 100. 
+SELECT *
+FROM [Detalles Pedido] AS d 
+WHERE d.Cantidad * (d.PrecioUnitario*(d.Descuento)) between 10 and 100 
+
+--21. Informar los diferentes países que se encuentra en la tabla Clientes
+--22. Mostrar los 10 productos más vendidos e incluyendo a los empates en el último registro
+--23. Visualizar el máximo y mínimo precio de los productos por categoría, mostrar el nombre de la categoría.
+--24. Visualizar el máximo y mínimo precio de los productos por proveedor, mostrar el nombre del proveedor
+--25. Seleccionar las categorías que tengan más 5 productos. Mostrar el nombre de la categoría y el número de
+--productos.
+--26. Calcular cuántos clientes existen en cada País. 
