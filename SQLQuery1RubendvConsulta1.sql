@@ -228,3 +228,70 @@ WHERE NOT EXISTS (SELECT *
 														WHERE P.IDCliente = C.IDCliente   --Tratar de leer desde dentro hacia fuera
 														AND P.IDEmpleado = E.IDEmpleado))
 
+/*--------------------Practica Pampero-----------------------------*/
+
+--Seleccione todos los campos de la tabla cliente, ordenados por nombre del contacto de la empresa, alfabéticamente.
+
+SELECT * 
+FROM Clientes AS C
+ORDER BY C.NombreEmpresa
+--2. Seleccione todos los campos de la tabla pedidos, ordenados por fecha de la orden, descendentemente. 
+SELECT * 
+FROM Pedidos AS P
+ORDER BY P.FechaPedido DESC
+
+--3. Seleccione todos los campos de la tabla detalle de pedidos, ordenados por cantidad pedida.
+--Ascendentemente. 
+
+SELECT * 
+FROM Pedidos AS P
+ORDER BY P.EnvioPor ASC
+
+--4. Obtener todos los productos, cuyo nombre comienzan con la letra P y tienen un precio unitario
+--comprendido entre 10 y 120
+SELECT * 
+FROM Productos AS P
+WHERE P.NombreProducto LIKE 'P%'AND P.PrecioUnitario BETWEEN 10 AND 120
+
+--5. Obtener todos los clientes de los países de: EE.UU., Francia y Reino Unido.
+SELECT *
+FROM Clientes AS C
+WHERE C.Pais IN ('EE.UU','Francia','Reino Unido')
+
+--6. Obtener todos los productos descontinuados y sin stock, 
+--que pertenecen a la categoría 1, 4 y 6.
+SELECT * 
+FROM Productos AS P
+WHERE (P.Discontinuado= 1 OR P.UnidadesEnStock = 0) AND P.IDCategoria IN (1,4,6)
+-- Asumo que el tipo de dato TinyInt es un dato como 1(Descontinuado) o 0(NO descontinuado)
+--7. Obtener todos los pedidos hechos por el empleado con código: 2, 5, 7 y 8 en el año 2019
+
+SELECT * 
+FROM Pedidos AS P
+WHERE P.IDEmpleado IN (2,5,7,8)AND (P.FechaPedido >= '20190101' AND P.FechaPedido <='20191231')
+
+--9. Seleccionar todos los clientes que no cuenten con FAX, del País de EE.UU.
+SELECT *
+FROM Clientes AS C
+WHERE C.Pais = 'EE.UU' AND C.Fax IS NULL --Al parecer analizando solo la tabla no contamos con ningun cliente
+--de nacionalidad estadounidense
+
+--10. Seleccionar todos los empleados que cuentan con un jefe. 
+SELECT * 
+FROM Empleados AS E
+WHERE E.JefeID IS NOT NULL
+
+--11. Seleccionar todos los campos del cliente, cuya empresa empiecen con letra O hasta la S y pertenezcan al
+--país de EE.UU., ordenarlos por la dirección. 
+SELECT *
+FROM Clientes AS C
+WHERE LEFT(UPPER(C.NombreEmpresa), 1) BETWEEN 'O' AND 'S' AND C.Pais = 'EE.UU.'
+ORDER BY C.Direccion
+
+--12. Seleccionar todos los campos del cliente, cuya empresa empiecen con las letras de la B a la G, y
+--pertenezcan al país de Reino Unido, ordenarlos por nombre de la empresa
+
+SELECT * 
+FROM CLIENTES AS C
+WHERE LEFT(UPPER(C.NombreEmpresa),1) BETWEEN 'B' AND 'G' AND C.Pais = 'Reino Unido'
+ORDER BY C.NombreEmpresa
